@@ -17,7 +17,7 @@ public class ProductServlet extends HttpServlet {
     private final List<Product> productList = new ArrayList<>();
 
     public void init() {
-        String[] names ={"Thit heo","Thit bo","Thit ga"};
+        String[] names ={"Thịt heo","Thit bo","Thit ga"};
         for(int i = 0;i<names.length;i++){
             productList.add(new Product(i+1,names[i],50000*(i+1)));
         }
@@ -70,12 +70,12 @@ public class ProductServlet extends HttpServlet {
                 Product p = new Product(id, name, price);
                 productList.add(p);
             } else {
-                obj.put("id", 0);
+                obj.put("code", 0);
                 obj.put("message", "Product with same ID exists");
                 obj.put("data", "");
             }
         } catch (Exception e) {
-            obj.put("id", 0);
+            obj.put("code", 0);
             obj.put("message", e.getMessage());
             obj.put("data", "");
         } finally {
@@ -103,7 +103,7 @@ public class ProductServlet extends HttpServlet {
                     prod.price = priceNum;
                     break;
                 }
-                obj.put("id", 1);
+                obj.put("code", 1);
                 obj.put("message", "Product updated successfully");
                 obj.put("data", "");
             }
@@ -112,28 +112,28 @@ public class ProductServlet extends HttpServlet {
         }
     }
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws  IOException {
         String id = req.getParameter("id");
-
+        JSONObject obj = new JSONObject();
         //Check if the id exists in the database
-        Product product = getProductById(id);
+        Product product = getProductById(Integer.parseInt(id));
         if (product == null) {
             //Return error message
             String message = "Product id " + id + " does not exist";
-            String data = null;
-            int id = 0;
-            returnErrorResponse(resp, id, message, data);
+            int code = 0;
+            obj.put("code", code);
+            obj.put("message", message);
+            obj.put("data", (Object) null);
+            return;
         }
-
         //Delete product
-        deleteProduct(product);
-
         //Return success message
+        productList.remove(product);
         String message = "Product deleted successfully";
-        String data = null;
-        int id = 1;
-        returnResponse(resp, id, message, data);
-
+        int code = 1;
+        obj.put("code", code);
+        obj.put("message", message);
+        obj.put("data", product);
     }
     private Product getProductById(int id) {
         for (Product prod : productList){

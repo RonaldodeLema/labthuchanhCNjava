@@ -25,6 +25,9 @@ public class UploadServlet extends HttpServlet {
         response.setContentType("text/html;charset=utf-8");
         Part partAttr = request.getPart("document");
         String nameFile = request.getParameter("fileName");
+        if(nameFile.equals("")){
+            nameFile = partAttr.getName();
+        }
         String[] checkExist  = request.getParameterValues("override");
         InputStream is = partAttr.getInputStream();
         String apsPath = "C:\\Users\\vanth\\IdeaProjects\\labthuchanhCNjava\\lab04\\ex04\\src\\main\\uploads";
@@ -42,6 +45,12 @@ public class UploadServlet extends HttpServlet {
             }
 
         }
+
+
+
+
+
+
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
             int read = 0;
             byte[] bytes = new byte[1024];
