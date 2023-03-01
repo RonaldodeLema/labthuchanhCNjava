@@ -94,7 +94,7 @@
                 </p>
               </div>
             <div class="form-group">
-              <p>Already have an account? <a href="login.jsp">Login now!</a></p>
+              <p>Already have an account? <a href="login">Login now!</a></p>
             </div>
             </div>
           </form>

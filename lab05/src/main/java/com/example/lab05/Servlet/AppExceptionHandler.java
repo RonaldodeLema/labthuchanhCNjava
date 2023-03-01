@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,18 +14,24 @@ import java.io.PrintWriter;
 public class AppExceptionHandler extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response) throws ServletException, IOException {
-        processError(request, response);
+    protected void doGet(HttpServletRequest req,
+                         HttpServletResponse resp) throws ServletException, IOException {
+        processError(req, resp);
     }
 
-    protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response) throws ServletException, IOException {
-        processError(request, response);
+    protected void doPost(HttpServletRequest req,
+                          HttpServletResponse resp) throws ServletException, IOException {
+
+        processError(req, resp);
     }
 
     private void processError(HttpServletRequest request,
                               HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        if (session.getAttribute("isLogin")==null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
         // Analyze the servlet exception
         Throwable throwable = (Throwable) request
                 .getAttribute("jakarta.servlet.error.exception");
@@ -60,7 +67,7 @@ public class AppExceptionHandler extends HttpServlet {
         }
 
         out.write("<br><br>");
-        out.write("<a href=\"login.jsp\">Home Page</a>");
+        out.write("<a href=\"product\">Home Page</a>");
         out.write("</body></html>");
     }
 }

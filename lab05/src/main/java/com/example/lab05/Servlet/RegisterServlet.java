@@ -44,9 +44,11 @@ public class RegisterServlet extends HttpServlet {
         else{
             message = "Mật khẩu xác nhận không đúng";
         }
-        userDAO.close();
         req.setAttribute("messageErr", message);
         RequestDispatcher rd = req.getRequestDispatcher("/register.jsp");
         rd.forward(req , resp);
+    }
+    public void destroy(){
+        userDAO.close();
     }
 }
