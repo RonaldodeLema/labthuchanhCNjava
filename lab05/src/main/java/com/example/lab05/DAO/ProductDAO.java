@@ -1,6 +1,6 @@
 package com.example.lab05.DAO;
 
-import com.example.lab05.HibernateUtils.HibernateUtils;
+import com.example.lab05.utils.HibernateUtils;
 import com.example.lab05.Model.Product;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

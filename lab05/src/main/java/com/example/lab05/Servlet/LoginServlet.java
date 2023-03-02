@@ -17,6 +17,10 @@ public class LoginServlet extends HttpServlet {
         userDAO = UserDAO.getInstance();
     }
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+            HttpSession session = req.getSession();
+            if (!session.isNew()) {
+                session.invalidate();
+            }
         resp.sendRedirect("login.jsp");
     }
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -40,6 +44,9 @@ public class LoginServlet extends HttpServlet {
                 resp.addCookie(ck1);
                 resp.sendRedirect("product");
                 return;
+            }
+            else {
+                messageErr = "Nhập sai tên hoặc mật khẩu";
             }
         }
         else {

@@ -18,13 +18,13 @@
             <h3>Product Management</h3>
         </div>
         <div class="col-md-6 text-right">
-            Xin chào <span class="text-danger">${cookie['username'].value}</span> | <a href="#" id="logout">Logout</a>
+            Xin chào <span class="text-danger">${cookie['username'].value}</span> | <a href="login" id="logout">Logout</a>
         </div>
     </div>
     <div class="row rounded border p-3">
         <div class="col-md-4">
             <h4 class="text-success">Thêm sản phẩm mới</h4>
-            <form class="mt-3" method="post" action="product">
+            <form class="mt-3" method="post" action="product/insert">
                 <div class="form-group">
                     <label for="product-name">Tên sản phẩm</label>
                     <input class="form-control" type="text" placeholder="Nhập tên sản phẩm" id="product-name" name="name">
@@ -104,8 +104,8 @@
     })
     $("#confirmDel").click(function (){
         $.ajax({
-            url : 'del',
-            method: "post",
+            url : 'product',
+            method: "get",
             data : {
                 prodDelID : prodID
             },
@@ -114,18 +114,6 @@
             }
         });
     })
-    $("#logout").click(function (){
-        $.ajax({
-            url : 'del',
-            method: "get",
-            data : {
-                isLogout : "true"
-            },
-            success : function() {
-                window.location.href="login.jsp";
-            }
-    })
-        })
 </script>
 </body>
 </html>

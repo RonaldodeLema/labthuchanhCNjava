@@ -25,6 +25,10 @@ public class ProductServlet extends HttpServlet {
         productDAO.add(new Product(4,"iphone 14","golden",44500000));
     }
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String prodDelID = req.getParameter("prodDelID");
+        if(prodDelID != null){
+            productDAO.delete(Integer.parseInt(prodDelID));
+        }
         List<Product> listProducts = productDAO.readAll();
         String message = "";
         req.setAttribute("listProducts", listProducts);
@@ -48,7 +52,7 @@ public class ProductServlet extends HttpServlet {
         RequestDispatcher rd = req.getRequestDispatcher("index.jsp");
         rd.forward(req , resp);
     }
-    public void destroy(){
+        public void destroy(){
         productDAO.close();
     }
 }

@@ -1,4 +1,4 @@
-package com.example.lab05.HibernateUtils;
+package com.example.lab05.utils;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
