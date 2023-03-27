@@ -1,6 +1,5 @@
 package tdtu.edu.ex04.services;
 
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import tdtu.edu.ex04.models.Student;
 import tdtu.edu.ex04.repository.StudentRepository;
