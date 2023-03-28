@@ -13,12 +13,18 @@ public class Product {
     private Long id;
     private String name;
     private Double price;
-    private String category;
-    private String brand;
     private String color;
+    private String image;
+    private Integer quantity;
 
     @OneToMany(mappedBy = "product",fetch = FetchType.EAGER)
     private List<OrderItem> orderItems;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @Override
     public String toString() {
