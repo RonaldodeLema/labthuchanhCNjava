@@ -1,5 +1,6 @@
 package tdtu.edu.springecommerce.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,6 +17,7 @@ public class Customer {
     private String email;
 
     @OneToMany(mappedBy = "customer",fetch = FetchType.EAGER)
+    @JsonBackReference
     private List<Order> orders;
 
     @Override

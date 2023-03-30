@@ -16,4 +16,8 @@ public class CategoryServiceImp {
     public Iterable<Category> findAll() {
         return categoryService.findAll();
     }
+
+    public Category save(Category category) {
+        return categoryService.save(category);
+    }
 }

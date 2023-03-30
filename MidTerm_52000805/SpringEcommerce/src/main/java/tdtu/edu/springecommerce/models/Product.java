@@ -1,5 +1,7 @@
 package tdtu.edu.springecommerce.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,11 +20,14 @@ public class Product {
     private Integer quantity;
 
     @OneToMany(mappedBy = "product",fetch = FetchType.EAGER)
+    @JsonBackReference
     private List<OrderItem> orderItems;
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonManagedReference
     @JoinColumn(name = "brand_id")
     private Brand brand;
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonManagedReference
     @JoinColumn(name = "category_id")
     private Category category;
 

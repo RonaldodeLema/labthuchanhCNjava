@@ -1,58 +1,66 @@
 package tdtu.edu.springecommerce.controllers;
 
+import com.google.gson.Gson;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import tdtu.edu.springecommerce.models.Cart;
 import tdtu.edu.springecommerce.models.Category;
 import tdtu.edu.springecommerce.models.Product;
 import tdtu.edu.springecommerce.models.User;
-import tdtu.edu.springecommerce.services.impservices.CategoryServiceImp;
-import tdtu.edu.springecommerce.services.impservices.ProductServiceImp;
-import tdtu.edu.springecommerce.services.impservices.UserServiceImp;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 public class HomeController {
+    public static final String baseUrl = "http://localhost:8080";
     @Autowired
-    private ProductServiceImp productServiceImp;
-    @Autowired
-    private CategoryServiceImp categoryServiceImp;
-    @Autowired
-    private UserServiceImp userServiceImp;
+    private HomeRestController homeRestController;
 
     @GetMapping("/")
     public String goHomePage() {
         return "redirect:/home-page";
     }
+
     @GetMapping("/home-page")
     public String getAllCateAndProd(Model model) {
-        Iterable<Product> products = productServiceImp.findAll();
-        Iterable<Category> categories = categoryServiceImp.findAll();
+        RestTemplate restTemplate = new RestTemplate();
+        String url = baseUrl + "/api/get-all-cate-prod";
+        Map<String, List<Object>> response = restTemplate.getForObject(url, Map.class);
+        assert response != null;
+        List<Product> products = (List<Product>) response.get("products").get(0);
+        List<Category> categories = (List<Category>) response.get("categories").get(0);
         model.addAttribute("products", products);
         model.addAttribute("categories", categories);
         return "index";
     }
+
+    @PostMapping("/home-page")
+    @ResponseBody
+    public String goHomePage(Model model) {
+        return "index";
+    }
+
     @GetMapping("/product")
     public String goProduct() {
         return "redirect:/";
     }
+
     @GetMapping("/product/{id}")
     public String goProduct(@PathVariable("id") String id) {
         return "redirect:/";
-
     }
+
     @GetMapping("/product/")
     public String goProductNull() {
         return "redirect:/";
@@ -60,56 +68,85 @@ public class HomeController {
 
     @GetMapping("/product/detail/{id}")
     public String getDetail(@PathVariable("id") Long id, Model model, RedirectAttributes ra) {
+        String api = "/api/product/find/" + id;
+        String url = baseUrl + api;
+        RestTemplate restTemplate = new RestTemplate();
+        String strProduct = restTemplate.getForObject(url, String.class);
         try {
-            Product product = productServiceImp.findByID(id);
+            Gson g = new Gson();
+            Product product = g.fromJson(strProduct, Product.class);
             model.addAttribute("product", product);
-
             return "product-details";
         } catch (Exception e) {
             ra.addFlashAttribute("message", e.getMessage());
             return "redirect:/";
         }
     }
+
     @GetMapping("/product/cart")
     public String goCart(Model model, HttpServletRequest request) {
-        List<Product> products = (List<Product>) request.getSession().getAttribute("sessionProducts");
+        HttpSession session = request.getSession();
+        if (session.getAttribute("userLogin") == null) {
+            return "redirect:/auth";
+        }
+        User user = (User) session.getAttribute("userLogin");
+        String api = "/api/cart/all-by-id/" + user.getId();
+        String url = baseUrl + api;
+        RestTemplate restTemplate = new RestTemplate();
+        Iterable products = restTemplate.getForObject(url, Iterable.class);
         if (products == null) {
             products = new ArrayList<>();
-            request.getSession().setAttribute("sessionProducts", products);
         }
-        model.addAttribute("products",products);
+        model.addAttribute("products", products);
         return "cart";
     }
 
     @GetMapping("/product/cart/add/{id}")
-    public String addToCart(@PathVariable("id") Long id,Model model, RedirectAttributes ra, HttpServletRequest request) {
+    public String addToCart(@PathVariable("id") Long product_id, Model model, RedirectAttributes ra, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (session.getAttribute("userLogin") == null) {
+            return "redirect:/auth";
+        }
+        User user = (User) session.getAttribute("userLogin");
+        String api = "/api/cart/add";
+        String url = baseUrl + api;
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        String requestJson = "{\"user_id\":\"" + user.getId() + "\",\"product_id\":\"" + product_id + "\"}";
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(requestJson, headers);
+        String strCart = restTemplate.postForObject(url, entity, String.class);
+        Gson gson = new Gson();
+        Cart cart = gson.fromJson(strCart, Cart.class);
+        System.out.println(cart);
+//       get product by id
+        api = "/api/cart/all-by-id/" + user.getId();
+        url = baseUrl + api;
+        restTemplate = new RestTemplate();
         try {
-            List<Product> products = (List<Product>) request.getSession().getAttribute("sessionProducts");
-            Product product = productServiceImp.findByID(id);
+            Iterable products = restTemplate.getForObject(url, Iterable.class);
             if (products == null) {
                 products = new ArrayList<>();
-                request.getSession().setAttribute("sessionProducts", products);
             }
-            products.add(product);
-            request.getSession().setAttribute("sessionProducts", products);
-            model.addAttribute("products",products);
+            model.addAttribute("products", products);
             return "redirect:/product/cart";
         } catch (Exception e) {
             ra.addFlashAttribute("message", e.getMessage());
             return "redirect:/";
         }
     }
+
     @GetMapping("/product/cart/delete/{id}")
-    public String removeToCart(@PathVariable("id") Long id,Model model, RedirectAttributes ra, HttpServletRequest request) {
+    public String removeToCart(@PathVariable("id") Long id, Model model, RedirectAttributes ra, HttpServletRequest request) {
         try {
             List<Product> products = (List<Product>) request.getSession().getAttribute("sessionProducts");
-            Product product = productServiceImp.findByID(id);
+            Product product = homeRestController.getDetails(id);
             products.removeIf(i -> Objects.equals(i.getId(), product.getId()));
             HttpSession session = request.getSession();
             session.removeAttribute("sessionProducts");
             session.setAttribute("sessionProducts", products);
             request.getSession().setAttribute("sessionProducts", products);
-            model.addAttribute("products",products);
+            model.addAttribute("products", products);
             return "redirect:/product/cart";
         } catch (Exception e) {
             ra.addFlashAttribute("message", e.getMessage());
@@ -118,14 +155,18 @@ public class HomeController {
     }
 
     @PostMapping("/product/search")
-    public String goSearch(Model model,@RequestBody String request) {
+    public String goSearch(Model model, @RequestBody String request) {
         String text = request.split("txtSearch=")[1];
-        Iterable<Product> products = productServiceImp.searchAdvance(text);
+        String api = "/api/product/search/" + text;
+        String url = baseUrl + api;
+        RestTemplate restTemplate = new RestTemplate();
+        Iterable products = restTemplate.getForObject(url, Iterable.class);
         model.addAttribute("products", products);
         return "search";
     }
+
     @GetMapping("/auth")
-    public String goAuth(Model model, HttpServletRequest request,RedirectAttributes ra) {
+    public String goAuth(Model model, HttpServletRequest request, RedirectAttributes ra) {
         HttpSession session = request.getSession();
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -138,29 +179,59 @@ public class HomeController {
                 }
             }
         }
-        if(session.getAttribute("userLogin")!=null){
+        if (session.getAttribute("userLogin") != null) {
             ra.addFlashAttribute("message", "Login success!");
             return "redirect:/";
         }
-        model.addAttribute("user",new User());
+        model.addAttribute("user", new User());
         return "login";
     }
+
     @PostMapping("/auth/login")
     public String goLogin(User user, RedirectAttributes ra, HttpServletRequest request, HttpServletResponse response) {
-        User userValid = userServiceImp.userLoginValid(user);
-        if(userValid!=null){
+        String api = "/api/auth/login/user-valid";
+        String url = baseUrl + api;
+        String requestJson = "{\"username\":\"" + user.getUsername() + "\",\"password\":\"" + user.getPassword() + "\"}";
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(requestJson, headers);
+        String strUser = restTemplate.postForObject(url, entity, String.class);
+        Gson gson = new Gson();
+        User userValid = gson.fromJson(strUser, User.class);
+        if (userValid != null) {
             HttpSession session = request.getSession();
-            Cookie ck = new Cookie("username",user.getUsername());
-            Cookie ck1 = new Cookie("password",user.getPassword());
+            Cookie ck = new Cookie("username", user.getUsername());
+            Cookie ck1 = new Cookie("password", user.getPassword());
             response.addCookie(ck);
             response.addCookie(ck1);
-            session.setAttribute("userLogin",user);
-        }
-        else ra.addFlashAttribute("message", "Password or Username invalid!");
+            session.setAttribute("userLogin", userValid);
+        } else ra.addFlashAttribute("message", "Password or Username invalid!");
         return "redirect:/auth";
     }
+
     @GetMapping("/auth/login")
     public String goLogin() {
+        return "redirect:/auth";
+    }
+
+    @GetMapping("/auth/signup")
+    public String goSignUp() {
+        return "redirect:/auth";
+    }
+
+    @PostMapping("/auth/signup")
+    public String goSignUp(User user, RedirectAttributes ra) {
+        String api = "/api/user/add";
+        String url = baseUrl + api;
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        Gson gson = new Gson();
+        String requestJson = gson.toJson(user);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(requestJson, headers);
+        String strMessage = restTemplate.postForObject(url, entity, String.class);
+        ra.addFlashAttribute("messageRegister", strMessage);
         return "redirect:/auth";
     }
 

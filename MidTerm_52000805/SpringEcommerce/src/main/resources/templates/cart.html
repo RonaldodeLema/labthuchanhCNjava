@@ -29,15 +29,15 @@
 									<img th:src="@{'/images/shop/'+ ${product.image}}" alt=""  src=""/>
 								</td>
 								<td class="cart_price">
-									<p>$[[${product.price}]]</p>
+									<p> $<span id="price">[[${product.price}]]</span></p>
 								</td>
 								<td class="cart_quantity">
 									<div class="cart_quantity_button">
-										<input class="cart_quantity_input" type="number" name="quantity" value="1" autocomplete="off" size="2">
+										<input class="cart_quantity_input quantity" type="number" name="quantity" value="1" min="1" autocomplete="off" size="2">
 									</div>
 								</td>
 								<td class="cart_total">
-									<p class="cart_total_price">$59</p>
+									<p class="cart_total_price"> $<span class="total">[[${product.total}]]</span></p>
 								</td>
 								<td class="cart_delete">
 									<a class="cart_quantity_delete" th:href="@{'/product/cart/delete/'+${product.id}}"><i class="fa fa-times"></i></a>
@@ -58,5 +58,6 @@
 	<script type="text/javascript" th:src="@{/js/price-range.js}"></script>
 	<script type="text/javascript" th:src="@{/js/jquery.prettyPhoto.js}"></script>
 	<script type="text/javascript" th:src="@{/js/main.js}"></script>
+
 </body>
 </html>

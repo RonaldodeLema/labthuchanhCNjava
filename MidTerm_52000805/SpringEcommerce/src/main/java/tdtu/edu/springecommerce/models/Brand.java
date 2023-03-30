@@ -1,5 +1,6 @@
 package tdtu.edu.springecommerce.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,7 +13,9 @@ public class Brand {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
     @OneToMany(mappedBy = "brand",fetch = FetchType.EAGER)
+    @JsonBackReference
     private List<Product> products;
 
     @Override
