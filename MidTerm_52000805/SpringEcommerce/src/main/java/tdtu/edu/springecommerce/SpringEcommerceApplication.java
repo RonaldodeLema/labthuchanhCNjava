@@ -12,5 +12,6 @@ public class SpringEcommerceApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+
     }
 }

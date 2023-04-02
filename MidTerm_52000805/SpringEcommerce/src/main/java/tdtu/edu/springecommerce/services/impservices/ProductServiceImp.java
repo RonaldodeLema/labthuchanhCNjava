@@ -1,8 +1,6 @@
 package tdtu.edu.springecommerce.services.impservices;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import tdtu.edu.springecommerce.models.Product;
 import tdtu.edu.springecommerce.services.intservices.ProductService;
@@ -20,11 +18,23 @@ public class ProductServiceImp {
     public Iterable<Product> searchAdvance(String text){
         return productService.searchAdvance(text);
     }
+    public void updateQuantity(Long id,int quan){
+        productService.updateQuantity(id,quan);
+    }
 
     public Product findByID(Long id) {
         if(productService.findById(id).isPresent())
             return productService.findById(id).get();
         else
             return new Product();
+    }
+
+    public Iterable<Product> findAllProdByBrandId(Long brandId) {
+        return productService.findAllProByBrandId(brandId);
+    }
+
+    public Iterable<Product> findAllByLessPrice(Double price) {
+        return productService.findAllByLessRange(price);
+
     }
 }

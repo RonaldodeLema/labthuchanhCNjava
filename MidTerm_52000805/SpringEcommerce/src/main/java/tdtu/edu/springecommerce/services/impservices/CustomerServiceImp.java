@@ -20,4 +20,8 @@ public class CustomerServiceImp {
     public Iterable<Customer> findAll() {
         return customerService.findAll();
     }
+
+    public Customer findById(Long id) {
+        return customerService.findById(id).get();
+    }
 }

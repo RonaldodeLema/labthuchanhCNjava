@@ -20,4 +20,12 @@ public class User {
     @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
     @JsonBackReference
     private List<Cart> carts;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", customer=" + customer + '}';
+    }
 }

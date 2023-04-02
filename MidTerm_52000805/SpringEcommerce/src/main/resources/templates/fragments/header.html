@@ -6,8 +6,8 @@
         <div class="col-sm-6">
           <div class="contactinfo">
             <ul class="nav nav-pills">
-              <li><a href="#"><i class="fa fa-phone"></i> +2 95 01 88 821</a></li>
-              <li><a href="#"><i class="fa fa-envelope"></i> info@domain.com</a></li>
+              <li><a href="#"><i class="fa fa-phone"></i> 091 145 2692</a></li>
+              <li><a href="#"><i class="fa fa-envelope"></i> vanthao000009@gmail.com</a></li>
             </ul>
           </div>
         </div>
@@ -38,7 +38,7 @@
           <div class="shop-menu pull-right">
             <ul class="nav navbar-nav">
               <li><a th:href="@{/check-out}"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-              <li><a th:href="@{/product/cart}"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+              <li><a th:href="@{/cart}"><i class="fa fa-shopping-cart"></i> Cart</a></li>
               <li><a th:href="@{/auth}" th:unless="${session.userLogin != null}"><i class="fa fa-lock"></i> Login</a></li>
               <li><a th:href="@{/log-out}" th:if="${session.userLogin != null}" ><i class="fa fa-user"></i>[[${session.userLogin.username}]] | <i class="fa fa-sign-out"></i>Logout</a></li>
             </ul>
@@ -66,7 +66,7 @@
               <li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
                 <ul role="menu" class="sub-menu">
                   <li><a th:href="@{/check-out}">Checkout</a></li>
-                  <li><a th:href="@{/product/cart}">Cart</a></li>
+                  <li><a th:href="@{/cart}">Cart</a></li>
                   <li th:if="${session.userLogin != null}"><a th:href="@{/log-out}">Logout</a></li>
                   <li th:unless="${session.userLogin != null}"><a th:href="@{/auth}">Login</a></li>
                 </ul>
