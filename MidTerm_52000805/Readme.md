@@ -6,3 +6,19 @@ cURL: "/api/cart/add"
 
 cURL: "/api/cart/total/{id}"
 ![brand get all](./cURL/cart-cal-total-by-user-id.png)
+
+cURL: "/api/cart/delete/{id}"
+![brand get all](./cURL/cart-delete-id.png)
+
+cURL: /api/cart/all-by-id/{id}"
+![brand get all](./cURL/cart-find-by-user-id.png)
+
+cURL: "/api/category/get-all"
+![brand get all](./cURL/category-get-all.png)
+
+cURL: "/api/customer/find/{id}"
+![brand get all](./cURL/customer-find-by-id.png)
+
+cURL: "/api/cart/delete/{id}"
+![brand get all](./cURL/customer-update.png)
+
