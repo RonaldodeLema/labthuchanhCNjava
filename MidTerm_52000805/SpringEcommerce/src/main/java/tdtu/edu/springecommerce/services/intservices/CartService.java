@@ -16,12 +16,12 @@ public interface CartService extends CartRepository {
     Cart findProduct(Long user_id, Long id);
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Cart SET quantity = quantity + 1, total = total + price WHERE user.id = :userId AND product_id = :productId")
+    @Query(value = "UPDATE Cart SET quantity = quantity + 1, total = cast(total + price as double) WHERE user.id = :userId AND product_id = :productId")
     void updateQuantity(@Param("userId")Long userId, @Param("productId")Long productId);
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Cart SET quantity = :quan, total = price *: quan WHERE user.id = :userId AND product_id = :productId")
+    @Query(value = "UPDATE Cart SET quantity = :quan, total = cast(price *: quan as double )WHERE user.id = :userId AND product_id = :productId")
     void updateQuantity(@Param("userId")Long userId, @Param("productId")Long productId,int quan);
 
     @Query(value = "FROM Cart AS c WHERE c.user.id=:userId and c.product_id=:productId")

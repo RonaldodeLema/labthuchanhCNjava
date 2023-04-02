@@ -9,16 +9,9 @@ import tdtu.edu.springecommerce.services.intservices.CustomerService;
 public class CustomerServiceImp {
     @Autowired
     private CustomerService customerService;
-    public void showAll(){
-        customerService.findAll().forEach(System.out::println);
-    }
 
     public Customer save(Customer customer) {
         return customerService.save(customer);
-    }
-
-    public Iterable<Customer> findAll() {
-        return customerService.findAll();
     }
 
     public Customer findById(Long id) {

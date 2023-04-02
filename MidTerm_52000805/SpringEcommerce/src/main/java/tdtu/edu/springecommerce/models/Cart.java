@@ -35,4 +35,14 @@ public class Cart {
     public Cart() {
 
     }
+
+    public Cart(String name, Long productId, Double price, String image, int quantity, User user) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.image = image;
+        this.user = user;
+        this.product_id = productId;
+        this.total = Double.parseDouble(String.format("%.2f", (double)this.price *this.quantity));
+    }
 }

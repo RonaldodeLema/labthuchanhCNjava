@@ -45,8 +45,4 @@ public class CartServiceImp {
     public Double totalCartByUserId(Long userId) {
         return cartService.totalCartBy(userId);
     }
-
-//    public Iterable<Cart> deleteByProdID(Long id) {
-//        return cartService;
-//    }
 }

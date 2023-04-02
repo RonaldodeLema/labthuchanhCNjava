@@ -8,9 +8,6 @@ import tdtu.edu.springecommerce.services.intservices.ProductService;
 public class ProductServiceImp {
     @Autowired
     private ProductService productService;
-    public void showAll(){
-        productService.findAll().forEach(System.out::println);
-    }
 
     public Iterable<Product> findAll() {
         return productService.findAll();
@@ -26,7 +23,7 @@ public class ProductServiceImp {
         if(productService.findById(id).isPresent())
             return productService.findById(id).get();
         else
-            return new Product();
+            return null;
     }
 
     public Iterable<Product> findAllProdByBrandId(Long brandId) {

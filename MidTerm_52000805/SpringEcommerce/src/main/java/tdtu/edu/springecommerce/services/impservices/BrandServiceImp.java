@@ -9,9 +9,6 @@ import tdtu.edu.springecommerce.services.intservices.BrandService;
 public class BrandServiceImp {
     @Autowired
     private BrandService brandService;
-    public void showAll(){
-        brandService.findAll().forEach(System.out::println);
-    }
     public Iterable<Brand> findAll(){
         return brandService.findAll();
     }

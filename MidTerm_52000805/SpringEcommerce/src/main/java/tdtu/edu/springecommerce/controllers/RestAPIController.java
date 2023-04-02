@@ -71,9 +71,15 @@ public class RestAPIController {
             return cartServiceImp.save(cart);
         }
         else {
-            cartServiceImp.updateQuantity(user_id,product_id,quantity);
-            return cartServiceImp.findByUserIdAndProdId(user_id,product_id);
+            if(cartServiceImp.checkProductExist(user_id,product_id)) {
+                cartServiceImp.updateQuantity(user_id,product_id,quantity);
+                return cartServiceImp.findByUserIdAndProdId(user_id,product_id);
+            }
         }
+        User user = userServiceImp.findById(user_id);
+        Product product = productServiceImp.findByID(product_id);
+        Cart cart = new Cart(product.getName(),product_id,product.getPrice(),product.getImage(),quantity,user);
+        return cartServiceImp.save(cart);
     }
     @GetMapping("/api/cart/all-by-id/{id}")
     public Iterable<Cart> getCartByUserID(@PathVariable("id") Long user_id){

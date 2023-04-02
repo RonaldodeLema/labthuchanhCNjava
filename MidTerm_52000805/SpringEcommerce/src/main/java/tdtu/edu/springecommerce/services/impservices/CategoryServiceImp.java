@@ -9,15 +9,8 @@ import tdtu.edu.springecommerce.services.intservices.CategoryService;
 public class CategoryServiceImp {
     @Autowired
     private CategoryService categoryService;
-    public void showAll(){
-        categoryService.findAll().forEach(System.out::println);
-    }
 
     public Iterable<Category> findAll() {
         return categoryService.findAll();
-    }
-
-    public Category save(Category category) {
-        return categoryService.save(category);
     }
 }

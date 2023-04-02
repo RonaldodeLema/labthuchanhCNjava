@@ -9,9 +9,6 @@ import tdtu.edu.springecommerce.services.intservices.OrderService;
 public class OrderServiceImp {
     @Autowired
     private OrderService orderService;
-    public void showAll(){
-        orderService.findAll().forEach(System.out::println);
-    }
 
     public Order save(Order order) {
         return orderService.save(order);
