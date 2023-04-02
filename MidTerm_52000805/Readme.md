@@ -1,1 +1,2 @@
-![A cute kitten](http://placekitten.com/200/300)
+API: "/api/brand/get-all"
+![brand get all](./cURL/brand-get-all.png)
