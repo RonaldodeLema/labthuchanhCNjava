@@ -17,7 +17,7 @@
     + Run the project: Once the project is built, you can run it using the build tool.
 
     + Access the application: Once the application is running, you can access it by opening a web browser and navigating to http://localhost:8080, assuming that the application is configured to run on port 8080.
-    
+
 - Full CURL commands or Postman snapshots to verify the APIs
 
     + cURL: "/api/brand/get-all"
@@ -30,7 +30,7 @@
 ![brand get all](./cURL/cart-cal-total-by-user-id.png)
 
     + cURL: "/api/cart/delete/{id}"
-![brand get all](./cURL/cart-delete-id.png)
+![brand get all](./cURL/cart-delete-by-id.png)
 
     + cURL: /api/cart/all-by-id/{id}"
 ![brand get all](./cURL/cart-find-by-user-id.png)
