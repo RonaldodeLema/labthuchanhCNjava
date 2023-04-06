@@ -14,7 +14,7 @@ public class StudentServiceImp {
     public Iterable<Student> cau5a(int x){
         return studentService.cau5a(x);
     }
-    public Iterable<Student> cau5b(Double x){
+    public Integer cau5b(Double x){
         return studentService.cau5b(x);
     }
     public Iterable<Student> cau5c(String xxx){

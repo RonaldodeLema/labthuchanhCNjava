@@ -31,8 +31,8 @@ public class StudentServiceImp {
     public Iterable<Student> findAllByAgeGreaterThanX(int x){
         return studentService.findAllByAgeGreaterThan(x);
     }
-    public Iterable<Student> findAllByIeltsScoreEqual(Double x){
-        return studentService.findAllByIeltsScoreEquals(x);
+    public Iterable<Student> countStudentByIeltsScoreEquals(Double x){
+        return studentService.countStudentByIeltsScoreEquals(x);
     }
     public Iterable<Student> findAllByNameContainingXXX(String xxx){
         return studentService.findAllByNameContaining(xxx);

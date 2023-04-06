@@ -7,6 +7,6 @@ import tdtu.edu.ex04.repository.StudentRepository;
 @Service
 public interface StudentService extends StudentRepository {
     public Iterable<Student> findAllByAgeGreaterThan(Integer x);
-    public Iterable<Student> findAllByIeltsScoreEquals(Double x);
+    public Iterable<Student> countStudentByIeltsScoreEquals(Double x);
     public Iterable<Student> findAllByNameContaining(String xxx);
 }

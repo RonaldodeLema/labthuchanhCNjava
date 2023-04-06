@@ -51,7 +51,7 @@ public class Ex05Application implements CommandLineRunner {
 		// Count the number of students whose ielts score is equal to x, where x is an input
 		// parameter of the method.
 		System.out.println("Find all by ielts score equal "+ieltsScore);
-		studentServiceImp.cau5b(ieltsScore).forEach(System.out::println);
+		System.out.println(studentServiceImp.cau5b(ieltsScore));
 		String xxx = "tran";
 		System.out.println("Find all name containing '"+xxx+"'");
 		studentServiceImp.cau5c(xxx).forEach(System.out::println);

@@ -5,7 +5,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import tdtu.edu.ex04.models.Student;
-import tdtu.edu.ex04.services.StudentService;
 import tdtu.edu.ex04.services.StudentServiceImp;
 
 @SpringBootApplication
@@ -51,8 +50,8 @@ public class Ex04Application implements CommandLineRunner {
 		Double ieltsScore = 6.5;
 		// Count the number of students whose ielts score is equal to x, where x is an input
 		// parameter of the method.
-		System.out.println("Find all by ielts score equal "+ieltsScore);
-		studentServiceImp.findAllByIeltsScoreEqual(ieltsScore).forEach(System.out::println);
+		System.out.println("Count student by ielts score equal "+ieltsScore);
+		System.out.println(studentServiceImp.countStudentByIeltsScoreEquals(ieltsScore));
 		String xxx = "tran";
 		System.out.println("Find all name containing '"+xxx+"'");
 		studentServiceImp.findAllByNameContainingXXX(xxx).forEach(System.out::println);
