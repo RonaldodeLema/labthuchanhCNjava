@@ -25,7 +25,7 @@
 					</div>
 					<div class="col-sm-6">
 						<a th:href="@{/employee/add}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Add New Employee</span></a>
-						<a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>						
+						<a href="#deleteEmployeeModal" onclick="handleClick(this)" id="deleteSelected" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>
 					</div>
 				</div>
 			</div>
@@ -59,8 +59,8 @@
 						<td>[[${employee.address}]]</td>
 						<td>[[${employee.phone}]]</td>
 						<td>
-							<a href="add.html" class="edit"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-							<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+							<a th:href="@{'/employee/edit/'+${employee.id}}" class="edit"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+							<a href="#deleteEmployeeModal" onclick="handleClick(this)" th:id="${employee.id}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 						</td>
 					</tr>
 				</th:block>
@@ -85,7 +85,7 @@
 <div id="deleteEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form>
+			<form method="post" id="deleteForm">
 				<div class="modal-header">						
 					<h4 class="modal-title">Delete Employee</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -96,11 +96,35 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input type="submit" class="btn btn-danger" value="Delete">
+					<input type="submit" class="btn btn-danger" id="btn-submit" value="Delete">
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
+<script>
+	function handleClick(element) {
+		const id = element.getAttribute('id');
+		if(id==="deleteSelected"){
+			const values = $('input[name="options[]"]:checked').map(function() {
+				return this.value;
+			}).get();
+			$("#btn-submit").attr("type", "button").click(function (){
+				$.ajax({
+					type: "POST",
+					contentType: "application/json",
+					url: "/employee/delete",
+					data: JSON.stringify({ employees_id: values }),
+					success: function(response) {
+						location.reload()
+					}
+				});
+			})
+		}
+		else {
+			$('#deleteForm').attr('action', '/employee/delete/'+id);
+		}
+	}
+</script>
 </body>
 </html>

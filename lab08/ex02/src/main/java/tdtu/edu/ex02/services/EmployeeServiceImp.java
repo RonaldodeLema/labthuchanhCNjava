@@ -19,4 +19,10 @@ public class EmployeeServiceImp {
     public Iterable<Employee> findAll(){
         return employeeService.findAll();
     }
+
+    public Employee findById(Long id) {return employeeService.findById(id).get();}
+
+    public void deleteById(Long id) {
+        employeeService.deleteById(id);
+    }
 }
