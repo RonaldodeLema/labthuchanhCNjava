@@ -1,9 +1,8 @@
 package tdtu.edu.lab09_10.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,16 +10,16 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ProductOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private ProductOrderPK pk;
+    @ManyToOne(fetch =FetchType.EAGER)
+    @JsonManagedReference
+    private Product product;
+    @ManyToOne(fetch =FetchType.EAGER)
+    @JsonManagedReference
+    private Account account;
     private Integer quantity;
-    @Builder
-    public ProductOrder(Long id, ProductOrderPK pk, Integer quantity) {
-        this.id = id;
-        this.pk = pk;
-        this.quantity = quantity;
-    }
 }

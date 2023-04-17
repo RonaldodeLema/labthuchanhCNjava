@@ -1,9 +1,12 @@
 package tdtu.edu.lab09_10.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 
 @Data
@@ -17,9 +20,9 @@ public class Product {
     private Double price;
     private String illustration;
     private String description;
-//    @OneToMany(mappedBy = "products",fetch = FetchType.EAGER)
-//    @JsonBackReference
-//    private List<ProductOrder> productOrders;
+    @OneToMany(mappedBy = "product",fetch = FetchType.EAGER)
+    @JsonBackReference
+    private List<ProductOrder> productOrders;
     @Builder
     public Product(Long code, String productName, Double price, String illustration, String description) {
         this.code = code;

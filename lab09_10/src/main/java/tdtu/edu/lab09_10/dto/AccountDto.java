@@ -1,15 +1,12 @@
 package tdtu.edu.lab09_10.dto;
 
-import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-@Data
-@Entity
+
 @NoArgsConstructor
+@Data
 public class AccountDto {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
     private String email;
     private String password;
